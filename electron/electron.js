@@ -89,6 +89,15 @@ Application.on('ready', async () => {
   const host = Server.get('host');
   const port = Server.get('port');
 
+  // Set user-agent
+  electron.session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36';
+    callback({
+      cancel: false,
+      requestHeaders: details.requestHeaders,
+    });
+  });
+
   Server.listen(port, host, () => {
     console.log('Server listening on http://%s:%s', host, port); // eslint-disable-line no-console
   });
